@@ -1,39 +1,30 @@
+using System;
 using System.Collections.Generic;
-using ShopSystem;
 using UnityEngine;
 using Zenject;
 
-public class ItemDatabase : IInitializable
+namespace ShopSystem
 {
-    private readonly Dictionary<string, BaseItem> _cache = new();
-
-    public T GetItemById<T>(string itemId) where T : BaseItem
+    public class ItemDatabase : IInitializable
     {
-        if (_cache.TryGetValue(itemId, out BaseItem cachedItem))
+        public event Action OnItemsLoadEnd;
+        private readonly Dictionary<int, BaseItem> _cache = new();
+
+        public T GetItemById<T>(int itemId) where T : BaseItem
         {
-            return cachedItem as T;
+            _cache.TryGetValue(itemId, out var result); ;
+            return result as T;
         }
 
-        T item = Resources.Load<T>($"Items/{itemId}");
-        if (item != null)
+        public void Initialize()
         {
-            _cache[itemId] = item;
-        }
-        else
-        {
-            Debug.LogWarning($"Item with ID '{itemId}' not found at Resources/Items/{itemId}");
-        }
-
-        return item;
-    }
-
-    public void Initialize()
-    {
-        var allItems = Resources.LoadAll<BaseItem>("Items");
-        foreach (var item in allItems)
-        {
-            if (!_cache.ContainsKey(item.Id.ToString()))
-                _cache[item.Id.ToString()] = item;
+            var allItems = Resources.LoadAll<BaseItem>("Items");
+            foreach (var item in allItems)
+            {
+                if (!_cache.ContainsKey(item.Id))
+                    _cache[item.Id] = item;
+            }
+            OnItemsLoadEnd?.Invoke();
         }
     }
 }

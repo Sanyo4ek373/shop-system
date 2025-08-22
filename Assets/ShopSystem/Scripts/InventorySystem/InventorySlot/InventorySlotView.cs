@@ -7,7 +7,7 @@ namespace Inventory
 {
     public class InventorySlotView : MonoBehaviour, IPointerClickHandler
     {
-        public Action<bool> OnMouseClick;
+        public event Action<bool> OnMouseClick;
         [SerializeField] private Image _image;
 
         public void OnPointerClick(PointerEventData eventData)

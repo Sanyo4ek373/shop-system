@@ -1,3 +1,4 @@
+using System;
 using Inventory;
 using R3;
 using UnityEngine;
@@ -6,13 +7,15 @@ namespace ShopSystem
 {
     public class InventorySlotViewModel : MonoBehaviour
     {
+        public event Action<IReadOnlyInventorySlot> OnItemRemoved;
         private InventorySlot _slot;
         private InventorySlotView _view;
-        private BaseItem _item;
+        private DescriptionViewModel _description;
 
-        public void SetModel(InventorySlot slot)
+        public void SetModel(InventorySlot slot, DescriptionViewModel description)
         {
             _slot = slot;
+            _description = description;
             _view = GetComponent<InventorySlotView>();
             _view.OnMouseClick += OnMouseClickHandle;
 
@@ -21,7 +24,8 @@ namespace ShopSystem
 
         private void OnMouseClickHandle(bool isLeft)
         {
-            if (!isLeft) _view.SetImage(null);
+            if (!isLeft) OnItemRemoved?.Invoke(_slot);
+            else _description.ShowDescription(_slot.Item);
         }
     }
 }

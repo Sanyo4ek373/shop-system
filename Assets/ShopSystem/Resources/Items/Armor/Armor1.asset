@@ -15,7 +15,9 @@ MonoBehaviour:
   <Id>k__BackingField: 1
   <Sprite>k__BackingField: {fileID: 220788501, guid: d9189d27e1af638489a6cf1320906f53, type: 3}
   <Name>k__BackingField: Default Armor
-  <Description>k__BackingField: asdasdasdasd
+  <Description>k__BackingField: Just default armor like many others
   <Cost>k__BackingField: 11
   <Type>k__BackingField: 1
-  <Defense>k__BackingField: 2
+  <TypeDescription>k__BackingField:
+    Type: Armor
+    Value: 3
