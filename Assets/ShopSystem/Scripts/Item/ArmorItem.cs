@@ -5,8 +5,9 @@ namespace ShopSystem
     [CreateAssetMenu(fileName = "ArmorSO", menuName = "Items/Armor")]
     public class ArmorItem : BaseItem
     {
-        private void OnValidate()
+        protected override void OnValidate()
         {
+            base.OnValidate();
             Type = ItemType.Armor;
             TypeDescription.Type = "Armor";
         }

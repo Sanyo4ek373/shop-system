@@ -4,9 +4,10 @@ using Zenject;
 
 namespace ShopSystem
 {
+    [UnityEngine.RequireComponent(typeof(InventoryView))]
     public class InventoryViewModel : MonoInstaller
     {
-        private Inventory _inventory;
+        private Inventory _model;
         private InventoryView _view;
         private List<InventorySlotViewModel> _inventorySlots;
         private DiContainer _container;
@@ -16,7 +17,7 @@ namespace ShopSystem
         private const string k_saveKey = "Grid";
 
         [Inject]
-        public void Construct(DiContainer container, SaveManager saveManager, ItemDatabase itemDatabase, DescriptionViewModel description)
+        public void Construct(DiContainer container, SaveManager saveManager, ItemsDatabase itemDatabase, DescriptionViewModel description)
         {
             _container = container;
             _saveManager = saveManager;
@@ -35,19 +36,29 @@ namespace ShopSystem
             Container.Bind<InventoryViewModel>().FromInstance(this).AsSingle();
         }
 
+        public bool AddItem(BaseItem item)
+        {
+            return _model.AddItem(new InventorySlotData(item.Id, 1));
+        }
+
+        public bool IsFull()
+        {
+            return _model.ItemsCount.CurrentValue == _view.Rows * _view.Columns;
+        }
+
         private void OnItemsLoadEndHandle()
         {
-            _inventory = _container.Instantiate<Inventory>(new object[] { _view.Columns, _view.Rows, _saveManager.Load<InventoryData>(k_saveKey), _inventorySlots, _description });
-            _inventory.ItemsCount.Subscribe(
+            _model = _container.Instantiate<Inventory>(new object[] { _view.Columns, _view.Rows, _saveManager.Load<InventoryData>(k_saveKey), _inventorySlots, _description });
+            _model.ItemsCount.Subscribe(
             onNext: slots =>
             {
-                _saveManager.Save(k_saveKey, _inventory.GetInventoryData());
+                _saveManager.Save(k_saveKey, _model.GetInventoryData());
             });
         }
 
         private void OnItemRemovedHandle(IReadOnlyInventorySlot slot)
         {
-            _inventory.RemoveItem(slot);
+            _model.RemoveItem(slot);
         }
     }
 }

@@ -13,12 +13,12 @@ namespace ShopSystem
         private readonly ReactiveProperty<int> _itemsCount = new();
         private readonly ReactiveProperty<IReadOnlyInventorySlot[,]> _inventorySlots = new();
 
-        private ItemDatabase _itemDatabase;
+        private ItemsDatabase _itemDatabase;
 
         private readonly int _rows;
         private readonly int _columns;
 
-        public Inventory(int rows, int columns, InventoryData data, List<InventorySlotViewModel> inventorySlots, ItemDatabase itemDatabase, DescriptionViewModel description)
+        public Inventory(int rows, int columns, InventoryData data, List<InventorySlotViewModel> inventorySlots, ItemsDatabase itemDatabase, DescriptionViewModel description)
         {
             var slots = new InventorySlot[rows, columns];
             _rows = rows;
