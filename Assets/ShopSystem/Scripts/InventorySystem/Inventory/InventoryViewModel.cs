@@ -7,7 +7,7 @@ namespace ShopSystem
     [UnityEngine.RequireComponent(typeof(InventoryView))]
     public class InventoryViewModel : MonoInstaller
     {
-        private Inventory _model;
+        private InventoryModel _model;
         private InventoryView _view;
         private List<InventorySlotViewModel> _inventorySlots;
         private DiContainer _container;
@@ -48,7 +48,7 @@ namespace ShopSystem
 
         private void OnItemsLoadEndHandle()
         {
-            _model = _container.Instantiate<Inventory>(new object[] { _view.Columns, _view.Rows, _saveManager.Load<InventoryData>(k_saveKey), _inventorySlots, _description });
+            _model = _container.Instantiate<InventoryModel>(new object[] { _view.Columns, _view.Rows, _saveManager.Load<InventoryData>(k_saveKey), _inventorySlots, _description });
             _model.ItemsCount.Subscribe(
             onNext: slots =>
             {

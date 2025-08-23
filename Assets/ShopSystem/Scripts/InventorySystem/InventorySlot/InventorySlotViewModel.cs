@@ -10,11 +10,11 @@ namespace ShopSystem
     {
         public event Action<IReadOnlyInventorySlot> OnItemRemoved;
 
-        private InventorySlot _slot;
+        private InventorySlotModel _slot;
         private InventorySlotView _view;
         private DescriptionViewModel _description;
 
-        public void SetModel(InventorySlot slot, DescriptionViewModel description)
+        public void SetModel(InventorySlotModel slot, DescriptionViewModel description)
         {
             _slot = slot;
             _description = description;

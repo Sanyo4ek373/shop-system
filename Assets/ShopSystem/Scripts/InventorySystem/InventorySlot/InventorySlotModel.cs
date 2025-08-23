@@ -2,7 +2,7 @@ using R3;
 
 namespace ShopSystem
 {
-    public class InventorySlot : IReadOnlyInventorySlot
+    public class InventorySlotModel : IReadOnlyInventorySlot
     {
         public ReadOnlyReactiveProperty<BaseItem> Item => _item;
         public ReadOnlyReactiveProperty<int> ItemId => _itemId;
