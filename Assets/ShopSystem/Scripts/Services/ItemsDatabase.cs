@@ -5,14 +5,17 @@ using Zenject;
 
 namespace ShopSystem
 {
-    public class ItemDatabase : IInitializable
+    public class ItemsDatabase : IInitializable
     {
         public event Action OnItemsLoadEnd;
-        private readonly Dictionary<int, BaseItem> _cache = new();
+
+        public Dictionary<int, BaseItem> Items => _items;
+
+        private readonly Dictionary<int, BaseItem> _items = new();
 
         public T GetItemById<T>(int itemId) where T : BaseItem
         {
-            _cache.TryGetValue(itemId, out var result); ;
+            _items.TryGetValue(itemId, out var result); ;
             return result as T;
         }
 
@@ -21,8 +24,8 @@ namespace ShopSystem
             var allItems = Resources.LoadAll<BaseItem>("Items");
             foreach (var item in allItems)
             {
-                if (!_cache.ContainsKey(item.Id))
-                    _cache[item.Id] = item;
+                if (!_items.ContainsKey(item.Id))
+                    _items[item.Id] = item;
             }
             OnItemsLoadEnd?.Invoke();
         }

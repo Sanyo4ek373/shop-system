@@ -6,7 +6,7 @@ namespace ShopSystem
     {
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<ItemDatabase>().AsSingle();
+            Container.BindInterfacesAndSelfTo<ItemsDatabase>().AsSingle();
             Container.Bind<SaveManager>().AsSingle();
         }
     }

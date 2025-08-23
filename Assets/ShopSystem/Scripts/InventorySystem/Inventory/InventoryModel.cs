@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ShopSystem
 {
-    public class Inventory : IReadOnlyInventory
+    public class InventoryModel : IReadOnlyInventory
     {
         public ReadOnlyReactiveProperty<int> ItemsCount => _itemsCount;
         public ReadOnlyReactiveProperty<IReadOnlyInventorySlot[,]> InventorySlots => _inventorySlots;
@@ -13,14 +13,14 @@ namespace ShopSystem
         private readonly ReactiveProperty<int> _itemsCount = new();
         private readonly ReactiveProperty<IReadOnlyInventorySlot[,]> _inventorySlots = new();
 
-        private ItemDatabase _itemDatabase;
+        private ItemsDatabase _itemDatabase;
 
         private readonly int _rows;
         private readonly int _columns;
 
-        public Inventory(int rows, int columns, InventoryData data, List<InventorySlotViewModel> inventorySlots, ItemDatabase itemDatabase, DescriptionViewModel description)
+        public InventoryModel(int rows, int columns, InventoryData data, List<InventorySlotViewModel> inventorySlots, ItemsDatabase itemDatabase, DescriptionViewModel description)
         {
-            var slots = new InventorySlot[rows, columns];
+            var slots = new InventorySlotModel[rows, columns];
             _rows = rows;
             _columns = columns;
             int index = 0;
@@ -30,7 +30,7 @@ namespace ShopSystem
             {
                 for (int c = 0; c < columns; c++)
                 {
-                    var slot = new InventorySlot();
+                    var slot = new InventorySlotModel();
 
                     if (index < data.Slots.Count) slot.SetInventorySlot(data.Slots[index]);
                     else slot.SetInventorySlot(new InventorySlotData(0, 0));
@@ -49,7 +49,7 @@ namespace ShopSystem
 
         public int GetAmount(int itemId)
         {
-            return _inventorySlots.Value.Cast<InventorySlot>()
+            return _inventorySlots.Value.Cast<InventorySlotModel>()
                 .Where(slot => slot.ItemId.CurrentValue == itemId)
                 .Sum(slot => slot.Amount.CurrentValue);
         }
