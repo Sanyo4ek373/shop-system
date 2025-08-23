@@ -1,0 +1,3 @@
+Project Overview
+
+This project was built using R3 and Zenject, following the MVVM pattern for clean architecture and separation of concerns. Development time: ~12 hours.
